@@ -51,4 +51,3 @@ while bulloon:
         while rotate_times - 1 < -number[0]:
             bulloon.appendleft(bulloon.pop())
             rotate_times += 1
-
