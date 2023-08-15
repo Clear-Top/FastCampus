@@ -1,34 +1,37 @@
 import sys
 from collections import deque
-import copy
 input = sys.stdin.readline
 sys.setrecursionlimit(10**6)
 
+# 회전큐 크기, 찾을 수의 개수
 N, M = map(int, input().strip().split(' '))
-elements = deque(map(int, input().strip().split(' ')))
 
-left = 0
-right = 0
-pop = 0
-result = 0
+# 찾을 수
+finds = list(map(int, input().strip().split(' ')))
 
-elements_copy = copy.deepcopy(elements)
+# 회전 큐 초기화
+queue = deque([i for i in range(1,N+1)])
 
-for element in elements_copy:
-    if (len(elements) - pop)/2 < element-left+right:
-        # top 에 element 가 나올때까지 오른쪽회전
-        while elements[-1] != element:
-            elements.appendleft(elements.pop())
-            right += 1
-            result += 1
-        elements.pop()
-        pop += 1
+
+mid = int(len(queue) / 2)
+number_of_operations = 0
+
+# 찾을 수를 다 pop 할때까지
+while finds:
+    if queue[0] == finds[0]:
+        # print(f'{finds[0]}를 찾았습니다.')
+        pop_value = finds.pop(0)
+        queue.popleft()
+        # mid += 1
+        mid = len(queue) // 2
     else:
-        # 첫번째 원소에 element 가 나올때까지 왼쪽회전
-        while elements[0] != element:
-            elements.append(elements.popleft())
-            left += 1
-            result += 1
-        elements.popleft()
-        pop += 1
-print(result)
+        # if queue[mid] >= finds[0]:
+        if mid >= queue.index(finds[0]):
+            while queue[0] != finds[0]:
+                queue.append((queue.popleft()))
+                number_of_operations += 1
+        else:
+            while queue[0] != finds[0]:
+                queue.appendleft(queue.pop())
+                number_of_operations += 1
+print(number_of_operations)
